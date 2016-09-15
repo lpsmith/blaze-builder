@@ -1,4 +1,5 @@
 {-# LANGUAGE BangPatterns, CPP, MagicHash, OverloadedStrings #-}
+{-# LANGUAGE Trustworthy #-}
 ------------------------------------------------------------------------------
 -- |
 -- Module:      Blaze.ByteString.Builder.HTTP

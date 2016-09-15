@@ -1,3 +1,5 @@
+{-# LANGUAGE Trustworthy #-}
+
 ------------------------------------------------------------------------------
 -- |
 -- Module:      Blaze.ByteString.Builder.Compat.Write
