@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP, BangPatterns #-}
-{-# LANGUAGE Trustworthy #-}
+{-# LANGUAGE Unsafe #-}
 
 -- |
 -- Module      : Blaze.ByteString.Builder.Internal.Poke
