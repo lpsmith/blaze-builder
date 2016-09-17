@@ -1,5 +1,7 @@
 {-# LANGUAGE CPP, BangPatterns #-}
+#if __GLASGOW_HASKELL__ >= 704
 {-# LANGUAGE Unsafe #-}
+#endif
 
 -- |
 -- Module      : Blaze.ByteString.Builder.Internal.Poke
