@@ -126,9 +126,6 @@ getBound' msg write =
 instance Semigroup Poke where
   {-# INLINE (<>) #-}
   (Poke po1) <> (Poke po2) = Poke $ po1 >=> po2
-
-  {-# INLINE sconcat #-}
-  sconcat = foldr (<>) mempty
 #endif
 
 instance Monoid Poke where
@@ -148,9 +145,6 @@ instance Semigroup Write where
   {-# INLINE (<>) #-}
   (Write bound1 w1) <> (Write bound2 w2) =
     Write (bound1 + bound2) (w1 <> w2)
-
-  {-# INLINE sconcat #-}
-  sconcat = foldr (<>) mempty
 #endif
 
 instance Monoid Write where
