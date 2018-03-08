@@ -138,12 +138,10 @@ instance Monoid Poke where
   mconcat = foldr mappend mempty
 #endif
 
-#if MIN_VERSION_base(4,9,0)
 instance Semigroup Write where
   {-# INLINE (<>) #-}
   (Write bound1 w1) <> (Write bound2 w2) =
     Write (bound1 + bound2) (w1 <> w2)
-#endif
 
 instance Monoid Write where
   {-# INLINE mempty #-}
