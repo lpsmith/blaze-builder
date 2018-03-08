@@ -122,11 +122,9 @@ getBound' msg write =
     getBound $ write $ error $
     "getBound' called from " ++ msg ++ ": write bound is not data-independent."
 
-#if MIN_VERSION_base(4,9,0)
 instance Semigroup Poke where
   {-# INLINE (<>) #-}
   (Poke po1) <> (Poke po2) = Poke $ po1 >=> po2
-#endif
 
 instance Monoid Poke where
   {-# INLINE mempty #-}
