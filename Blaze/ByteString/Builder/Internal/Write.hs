@@ -141,7 +141,7 @@ instance Monoid Poke where
 instance Semigroup Write where
   {-# INLINE (<>) #-}
   (Write bound1 w1) <> (Write bound2 w2) =
-    Write (bound1 + bound2) (w1 <> w2)
+    Write (bound1 + bound2) (w1 Data.Semigroup.<> w2)
 
 instance Monoid Write where
   {-# INLINE mempty #-}
