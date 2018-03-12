@@ -56,9 +56,9 @@ import Data.ByteString.Builder.Internal
 #if !MIN_VERSION_base(4,8,0)
 import Data.Monoid
 #endif
-#if !(MIN_VERSION_base(4,11,0))
+
 import Data.Semigroup
-#endif
+
 
 ------------------------------------------------------------------------------
 -- Poking a buffer and writing to a buffer
