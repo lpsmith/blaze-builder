@@ -1,4 +1,7 @@
 {-# LANGUAGE CPP, BangPatterns #-}
+#if __GLASGOW_HASKELL__ >= 704
+{-# LANGUAGE Unsafe #-}
+#endif
 
 -- |
 -- Module      : Blaze.ByteString.Builder.Internal.Poke
@@ -45,6 +48,7 @@ module Blaze.ByteString.Builder.Internal.Write (
   , fromStorable
   , fromStorables
 
+  , writeByteString
   ) where
 
 import Foreign
@@ -52,6 +56,7 @@ import Foreign
 import Control.Monad
 
 import Data.ByteString.Builder.Internal
+import Data.ByteString.Internal as S
 
 #if MIN_VERSION_base(4,9,0)
 import Data.Semigroup
@@ -313,3 +318,11 @@ fromStorable = fromWriteSingleton writeStorable
 -- provided externally.
 fromStorables :: Storable a => [a] -> Builder
 fromStorables = fromWriteList writeStorable
+
+-- | Write a strict 'S.ByteString' to a buffer.
+writeByteString :: S.ByteString -> Write
+writeByteString bs = exactWrite l io
+  where
+  (fptr, o, l) = S.toForeignPtr bs
+  io pf = withForeignPtr fptr $ \p -> copyBytes pf (p `plusPtr` o) l
+{-# INLINE writeByteString #-}

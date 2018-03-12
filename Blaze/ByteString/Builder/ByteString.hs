@@ -1,3 +1,8 @@
+{-# LANGUAGE CPP #-}
+#if __GLASGOW_HASKELL__ >= 702
+{-# LANGUAGE Trustworthy #-}
+#endif
+
 ------------------------------------------------------------------------------
 -- |
 -- Module:      Blaze.ByteString.Builder.ByteString
@@ -33,23 +38,13 @@ module Blaze.ByteString.Builder.ByteString
 
     ) where
 
+import Blaze.ByteString.Builder.Internal.Write (writeByteString)
 
-import Blaze.ByteString.Builder.Internal.Write ( Write, exactWrite )
-import Foreign
 import qualified Data.ByteString.Builder       as B
 import qualified Data.ByteString.Builder.Extra as B
 import qualified Data.ByteString               as S
-import qualified Data.ByteString.Internal      as S
 import qualified Data.ByteString.Lazy          as L
 
-
--- | Write a strict 'S.ByteString' to a buffer.
-writeByteString :: S.ByteString -> Write
-writeByteString bs = exactWrite l io
-  where
-  (fptr, o, l) = S.toForeignPtr bs
-  io pf = withForeignPtr fptr $ \p -> copyBytes pf (p `plusPtr` o) l
-{-# INLINE writeByteString #-}
 
 -- | Create a 'B.Builder' denoting the same sequence of bytes as a strict
 -- 'S.ByteString'.
