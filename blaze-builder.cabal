@@ -1,5 +1,5 @@
 Name:                blaze-builder
-Version:             0.4.0.2
+Version:             0.4.1.0
 Synopsis:            Efficient buffered output.
 
 Description:
@@ -78,6 +78,9 @@ Library
                      bytestring-builder
   else
      build-depends:  bytestring >= 0.10.4 && < 1.0
+
+  if impl(ghc < 8.0)
+     build-depends: semigroups >= 0.16 && < 0.19
 
 test-suite test
   type:           exitcode-stdio-1.0
