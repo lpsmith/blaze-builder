@@ -58,9 +58,7 @@ import Data.Semigroup
 #elif !MIN_VERSION_base(4,8,0)
 import Data.Monoid
 #endif
-#if !(MIN_VERSION_base(4,11,0))
 import Data.Semigroup
-#endif
 
 ------------------------------------------------------------------------------
 -- Poking a buffer and writing to a buffer
@@ -124,14 +122,12 @@ getBound' msg write =
     getBound $ write $ error $
     "getBound' called from " ++ msg ++ ": write bound is not data-independent."
 
-#if MIN_VERSION_base(4,9,0)
 instance Semigroup Poke where
   {-# INLINE (<>) #-}
   (Poke po1) <> (Poke po2) = Poke $ po1 >=> po2
 
   {-# INLINE sconcat #-}
   sconcat = foldr (<>) mempty
-#endif
 
 instance Monoid Poke where
   {-# INLINE mempty #-}
@@ -145,7 +141,6 @@ instance Monoid Poke where
   mconcat = foldr mappend mempty
 #endif
 
-#if MIN_VERSION_base(4,9,0)
 instance Semigroup Write where
   {-# INLINE (<>) #-}
   (Write bound1 w1) <> (Write bound2 w2) =
@@ -153,7 +148,6 @@ instance Semigroup Write where
 
   {-# INLINE sconcat #-}
   sconcat = foldr (<>) mempty
-#endif
 
 instance Monoid Write where
   {-# INLINE mempty #-}
