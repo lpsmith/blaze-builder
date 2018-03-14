@@ -1,3 +1,8 @@
+* 0.4.1.0
+  - Gain compatibility with the Semigroup/Monoid proposal
+  - Add Word8 HTML escaping builders
+  - Speed up `fromHtmlEscapedText` and `fromHtmlEscapedLazyText`
+
 * 0.4.0.2
   - Fixed warnings on GHC 7.10,  courtesy of Mikhail Glushenkov.
 
