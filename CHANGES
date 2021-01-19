@@ -1,3 +1,6 @@
+* 0.4.2.1
+  - Bump cabal file to Cabal >= 1.10
+
 * 0.4.2.0
   - Make semigroup instances unconditional
   - Support bytestring-0.11
