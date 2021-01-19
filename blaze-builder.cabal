@@ -34,7 +34,7 @@ Stability:           Experimental
 
 Category:            Data
 Build-type:          Simple
-Cabal-version:       >= 1.8
+Cabal-version:       >= 1.10
 
 Extra-source-files:
                      Makefile
@@ -55,6 +55,7 @@ Source-repository head
 
 Library
   ghc-options:       -Wall
+  default-language:  Haskell98
 
   exposed-modules:   Blaze.ByteString.Builder
                      Blaze.ByteString.Builder.Int
@@ -83,12 +84,11 @@ Library
      build-depends: semigroups >= 0.16 && < 0.20
 
 test-suite test
-  type:           exitcode-stdio-1.0
-
-  hs-source-dirs: tests
-  main-is:        Tests.hs
-
-  ghc-options: -Wall -fno-warn-orphans
+  type:             exitcode-stdio-1.0
+  hs-source-dirs:   tests
+  main-is:          Tests.hs
+  default-language: Haskell98
+  ghc-options:      -Wall -fno-warn-orphans
 
   build-depends: base
                , blaze-builder
