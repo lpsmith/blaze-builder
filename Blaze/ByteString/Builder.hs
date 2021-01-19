@@ -120,15 +120,27 @@ unsafeDupablePerformIO :: IO a -> a
 unsafeDupablePerformIO = unsafePerformIO
 #endif
 
+withBS :: S.ByteString -> (ForeignPtr Word8 -> Int -> Int -> a) -> a
+#if MIN_VERSION_bytestring(0,11,0)
+withBS (S.BS fptr len) f = f fptr 0 len
+#else
+withBS (S.PS fptr offset len) f = f fptr offset len
+#endif
 
+mkBS :: ForeignPtr Word8 -> Int -> S.ByteString
+#if MIN_VERSION_bytestring(0,11,0)
+mkBS fptr len = S.BS fptr len
+#else
+mkBS fptr len = S.PS fptr 0 len
+#endif
 
 -- | Pack the chunks of a lazy bytestring into a single strict bytestring.
 packChunks :: L.ByteString -> S.ByteString
 packChunks lbs = do
     S.unsafeCreate (fromIntegral $ L.length lbs) (copyChunks lbs)
   where
-    copyChunks !L.Empty                         !_pf = return ()
-    copyChunks !(L.Chunk (S.PS fpbuf o l) lbs') !pf  = do
+    copyChunks !L.Empty           !_pf = return ()
+    copyChunks !(L.Chunk bs lbs') !pf  = withBS bs $ \fpbuf o l -> do
         withForeignPtr fpbuf $ \pbuf ->
             copyBytes pf (pbuf `plusPtr` o) l
         copyChunks lbs' (pf `plusPtr` l)
@@ -188,15 +200,15 @@ toByteStringIOWith !bufSize io builder = do
       let !ptr = Unsafe.unsafeForeignPtrToPtr fp
       (bytes, next) <- writer ptr size
       case next of
-        B.Done -> io $! S.PS fp 0 bytes
+        B.Done -> io $! mkBS fp bytes
         B.More req writer' -> do
-           io $! S.PS fp 0 bytes
+           io $! mkBS fp bytes
            let !size' = max bufSize req
            S.mallocByteString size' >>= getBuffer writer' size'
         B.Chunk bs' writer' -> do
            if bytes > 0
              then do
-               io $! S.PS fp 0 bytes
+               io $! mkBS fp bytes
                unless (S.null bs') (io bs')
                S.mallocByteString bufSize >>= getBuffer writer' bufSize
              else do
